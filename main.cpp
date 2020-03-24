@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "lineio.h"
+#include "fractionio.h"
 
 void printFormula(MathIO* m) {
     std::vector<bool> renderBuff = m->getRender();
@@ -18,10 +19,10 @@ void printFormula(MathIO* m) {
 
 int main() {
     LineIO line1("123");
-    printFormula(&line1);
-    LineIO line2("1234");
-    line2.setCompactMode(true);
-    printFormula(&line2);
+    LineIO line2("12");
+    FractionIO frac(&line1, &line2);
+    frac.setCompactMode(true);
+    printFormula(&frac);
 
     return 0;
 }
