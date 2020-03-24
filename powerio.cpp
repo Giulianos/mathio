@@ -1,15 +1,19 @@
 #include "powerio.h"
+#include <stdio.h>
 
 #define EXP_BASE_OVERLAP 2
 
-PowerIO::PowerIO(MathIO* base, MathIO* exp) : _base(base), _exp(exp), _compact(true) {}
+PowerIO::PowerIO(MathIO* base, MathIO* exp) : _base(base), _exp(exp), _compact(false) {
+    // Exponent is always compact
+    _exp->setCompactMode(true);
+}
 
 int PowerIO::getWidth() {
     return _base->getWidth() + _exp->getWidth() + 1;
 }
 
 int PowerIO::getHeight() {
-    return _base->getHeight() + _expHeigh() - EXP_BASE_OVERLAP;
+    return _base->getHeight() + _exp->getHeight() - EXP_BASE_OVERLAP;
 }
 
 std::vector<bool> PowerIO::getRender() {
@@ -27,17 +31,29 @@ std::vector<bool> PowerIO::getRender() {
 
     int bOffsetY = height - bHeight;
     int eOffsetX = bWidth + 1;
+    
+    fprintf(stderr, "Drawing a %d x %d formula\n", width, height);
 
     std::vector<bool> bBuffer = _base->getRender();
     std::vector<bool> eBuffer = _exp->getRender();
 
-    // Dump k
+    // Dump base render buffer
     for (int x = 0; x < bWidth; x++) {
         for (int y = 0; y < bHeight; y++) {
-
+            _renderBuff[x + (y+bOffsetY)*width] = bBuffer[x + y*bWidth];
         }
     }
 
+    // Dump exp render buffer
+    for (int x = 0; x < eWidth; x++) {
+        for (int y = 0; y < eHeight; y++) {
+            _renderBuff[x + eOffsetX + y*width] = eBuffer[x + y*eWidth];
+        }
+    }
 
-    
+    return _renderBuff;
+}
+
+void PowerIO::setCompactMode(bool compact) {
+    _compact = compact;
 }

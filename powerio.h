@@ -1,9 +1,11 @@
 #ifndef POWERIO_H
 #define POWERIO_H
 
+#include "mathio.h"
+
 class PowerIO : public MathIO {
-    MathIO _base;
-    MathIO _exp;
+    MathIO* _base;
+    MathIO* _exp;
     bool _compact;
     std::vector<bool> _renderBuff;
 
@@ -14,6 +16,6 @@ class PowerIO : public MathIO {
         int getHeight();
         std::vector<bool> getRender();
         void setCompactMode(bool compact);
-}
+};
 
 #endif
