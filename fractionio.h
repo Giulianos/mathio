@@ -7,14 +7,13 @@ class FractionIO : public MathIO {
     MathIO* _num;
     MathIO* _den;
     bool _compact;
-    std::vector<bool> _renderBuff;
     
     public:
         FractionIO(MathIO* numerator, MathIO* denominator);
 
         int getWidth();
         int getHeight();
-        std::vector<bool> getRender();
+	void render(ScreenBuffer* buffer);
         void setCompactMode(bool compact);
 };
 

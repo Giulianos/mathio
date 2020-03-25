@@ -7,7 +7,6 @@
 class LineIO : public MathIO {
     std::string _text;
     bool _compact;
-    std::vector<bool> _renderBuff;
 
     void renderRect(int x0, int y0, int width, int height);
 
@@ -16,7 +15,7 @@ class LineIO : public MathIO {
 
         int getWidth();
         int getHeight();
-        std::vector<bool> getRender();
+	void render(ScreenBuffer* buffer);
 
         // This makes the renderer
         // output a compact form

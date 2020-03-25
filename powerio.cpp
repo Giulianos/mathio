@@ -31,8 +31,6 @@ std::vector<bool> PowerIO::getRender() {
 
     int bOffsetY = height - bHeight;
     int eOffsetX = bWidth + 1;
-    
-    fprintf(stderr, "Drawing a %d x %d formula\n", width, height);
 
     std::vector<bool> bBuffer = _base->getRender();
     std::vector<bool> eBuffer = _exp->getRender();
