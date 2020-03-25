@@ -3,15 +3,16 @@
 
 #include "screenbuffer.h"
 
-class ScreenBufferWindow : public ScreenBuffer {
-	ScreenBuffer* _sbRef;
-	int _offsetX, _offsetY;
+class ScreenBufferWindow : public ScreenBuffer
+{
+  ScreenBuffer* _sbRef;
+  int _offsetX, _offsetY;
 
-	public:
-		ScreenBufferWindow(ScreenBuffer* b, int offsetX, int offsetY);
+public:
+  ScreenBufferWindow(ScreenBuffer* b, int offsetX, int offsetY);
 
-		void setPixel(int x, int y, bool value);
-		bool getPixel(int x, int y);
+  void setPixel(int x, int y, bool value);
+  bool getPixel(int x, int y);
 };
 
 #endif
