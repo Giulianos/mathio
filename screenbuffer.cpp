@@ -8,7 +8,9 @@
 #define PIXEL_BYTE(x, y, w) (((x) + (y) * (w)) / 8)
 #define PIXEL_BIT(x, y, w) (((x) + (y) * (w)) % 8)
 
-ScreenBuffer::ScreenBuffer() {}
+ScreenBuffer::ScreenBuffer()
+  : _b(NULL)
+{}
 
 ScreenBuffer::ScreenBuffer(size_t width, size_t height)
   : _w(width)

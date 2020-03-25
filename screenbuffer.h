@@ -6,7 +6,7 @@
 
 class ScreenBuffer
 {
-  uint8_t* _b = NULL;
+  uint8_t* _b;
   size_t _w, _h;
 
 protected:
@@ -16,8 +16,8 @@ public:
   ScreenBuffer(size_t width, size_t height);
   ~ScreenBuffer();
 
-  void setPixel(int x, int y, bool value);
-  bool getPixel(int x, int y);
+  virtual void setPixel(int x, int y, bool value);
+  virtual bool getPixel(int x, int y);
 };
 
 #endif
