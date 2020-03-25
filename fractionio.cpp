@@ -1,4 +1,5 @@
 #include "fractionio.h"
+#include "screenbufferwindow.h"
 
 FractionIO::FractionIO(MathIO* numerator, MathIO* denominator)
   : _num(numerator)
@@ -37,44 +38,27 @@ FractionIO::getHeight()
   return denHeight + numHeight + 3;
 }
 
-std::vector<bool>
-FractionIO::getRender()
+void
+FractionIO::render(ScreenBuffer* buffer)
 {
-  int width  = getWidth();
-  int height = getHeight();
-
-  _renderBuff.resize(width * height, false);
-
-  std::vector<bool> numBuff = _num->getRender();
-  std::vector<bool> denBuff = _den->getRender();
+  int width = getWidth();
 
   int numHeight = _num->getHeight();
   int numWidth  = _num->getWidth();
-  int denHeight = _den->getHeight();
   int denWidth  = _den->getWidth();
 
-  int numOffset = denWidth > numWidth ? (denWidth - numWidth) / 2 : 0;
-  int denOffset = denWidth < numWidth ? (numWidth - denWidth) / 2 : 0;
+  int numOffsetX = denWidth > numWidth ? (denWidth - numWidth) / 2 : 0;
+  int denOffsetX = denWidth < numWidth ? (numWidth - denWidth) / 2 : 0;
+  int denOffsetY = numHeight + 3;
 
-  // Dump numBuffer in fraction buffer
-  for (int x = 0; x < numWidth; x++) {
-    for (int y = 0; y < numHeight; y++) {
-      _renderBuff[x + numOffset + y * width] = numBuff[x + y * numWidth];
-    }
-  }
+  ScreenBufferWindow numBufferWindow(buffer, numOffsetX, 0);
+  ScreenBufferWindow denBufferWindow(buffer, denOffsetX, denOffsetY);
+
+  _den->render(&denBufferWindow);
+  _num->render(&numBufferWindow);
 
   // Draw fraction line
   for (int x = 0, y = numHeight + 1; x < width; x++) {
-    _renderBuff[x + y * width] = true;
+    buffer->setPixel(x, y, true);
   }
-
-  // Dump denBuffer in fraction buffer
-  for (int x = 0; x < denWidth; x++) {
-    for (int y = 0; y < denHeight; y++) {
-      _renderBuff[x + denOffset + (y + numHeight + 3) * width] =
-        denBuff[x + y * denWidth];
-    }
-  }
-
-  return _renderBuff;
 }

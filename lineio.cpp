@@ -26,9 +26,9 @@ LineIO::getHeight()
 void
 LineIO::renderRect(ScreenBuffer* buffer, int x0, int y0, int width, int height)
 {
-  int x1        = width + x0 - 1;
-  int y1        = height + y0 - 1;
-  int buffWidth = getWidth();
+  int x1 = width + x0 - 1;
+  int y1 = height + y0 - 1;
+
   for (int x = x0; x <= x1; x++) {
     for (int y = y0; y <= y1; y++) {
       if (x == x0 || x == x1 || y == y0 || y == y1) {

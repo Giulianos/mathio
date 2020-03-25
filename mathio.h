@@ -1,6 +1,8 @@
 #ifndef MATHIO_H
 #define MATHIO_H
 
+#include "screenbuffer.h"
+
 class MathIO
 {
 public:

@@ -9,7 +9,7 @@ class LineIO : public MathIO
   std::string _text;
   bool _compact;
 
-  void renderRect(int x0, int y0, int width, int height);
+  void renderRect(ScreenBuffer* buffer, int x0, int y0, int width, int height);
 
 public:
   LineIO(const std::string text);

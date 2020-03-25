@@ -1,15 +1,21 @@
 #include "fractionio.h"
 #include "lineio.h"
 #include "powerio.h"
+#include "screenbuffer.h"
+#include "screenbufferwindow.h"
 #include <stdio.h>
 
 void
 printFormula(MathIO* m)
 {
-  std::vector<bool> renderBuff = m->getRender();
-  for (int y = 0; y < m->getHeight(); y++) {
-    for (int x = 0; x < m->getWidth(); x++) {
-      if (renderBuff[x + y * m->getWidth()]) {
+  int width  = m->getWidth();
+  int height = m->getHeight();
+  ScreenBuffer buffer(width, height);
+  m->render(&buffer);
+
+  for (int y = 0; y < height; y++) {
+    for (int x = 0; x < width; x++) {
+      if (buffer.getPixel(x, y)) {
         printf("██");
       } else {
         printf("  ");
