@@ -1,20 +1,24 @@
 #include "lineio.h"
+#include <stdlib.h>
+#include <string.h>
 
 #define CHAR_WIDTH 5
 #define CHAR_HEIGHT 9
 #define CHAR_COMPACT_HEIGHT 5
 
-LineIO::LineIO(const std::string text)
-  : _text(text)
-  , _compact(false)
-{}
+LineIO::LineIO(const char * text)
+  : _compact(false)
+{
+	_text = (char *)calloc(strlen(text)+1, sizeof(*_text));
+	strcpy(_text, text);
+}
 
 int
 LineIO::getWidth()
 {
-  size_t len = _text.length();
+  size_t len = strlen(_text);
 
-  return !len ? 0 : _text.length() * (CHAR_WIDTH + 1) - 1;
+  return !len ? 0 : len * (CHAR_WIDTH + 1) - 1;
 }
 
 int
@@ -41,8 +45,9 @@ LineIO::renderRect(ScreenBuffer* buffer, int x0, int y0, int width, int height)
 void
 LineIO::render(ScreenBuffer* buffer)
 {
+  int textLen = strlen(_text);
   // For now, just render squares
-  for (int i = 0; i < _text.length(); i++) {
+  for (int i = 0; i < textLen; i++) {
     int xPos = (CHAR_WIDTH + 1) * i;
     if (_compact) {
       renderRect(buffer, xPos, 0, CHAR_WIDTH, CHAR_COMPACT_HEIGHT);

@@ -1,6 +1,6 @@
 #include "screenbuffer.h"
 
-#include <iostream>
+#include <string.h>
 #include <stdlib.h>
 
 // TODO: refactor pixel indexing to
@@ -16,10 +16,10 @@ ScreenBuffer::ScreenBuffer(size_t width, size_t height)
   : _w(width)
   , _h(height)
 {
-  size_t bufferSize = width * height / 8;
-  bufferSize += width * height % 8 ? 1 : 0;
+  _bSize = width * height / 8;
+  _bSize += width * height % 8 ? 1 : 0;
 
-  _b = (uint8_t*)calloc(bufferSize, sizeof(*_b));
+  _b = (uint8_t*)calloc(_bSize, sizeof(*_b));
 }
 
 ScreenBuffer::~ScreenBuffer()
@@ -43,4 +43,9 @@ bool
 ScreenBuffer::getPixel(int x, int y)
 {
   return _b[PIXEL_BYTE(x, y, _w)] & 1 << (PIXEL_BIT(x, y, _w));
+}
+
+void
+ScreenBuffer::setAll(bool value) {
+	memset(_b, value ? 0xFF : 0x00, _bSize);
 }

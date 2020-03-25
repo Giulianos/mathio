@@ -1,6 +1,5 @@
 #include "powerio.h"
 #include "screenbufferwindow.h"
-#include <stdio.h>
 
 #define EXP_BASE_OVERLAP 2
 

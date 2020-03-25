@@ -2,17 +2,17 @@
 #define LINEIO_H
 
 #include "mathio.h"
-#include <string>
 
 class LineIO : public MathIO
 {
-  std::string _text;
+  char * _text;
   bool _compact;
 
   void renderRect(ScreenBuffer* buffer, int x0, int y0, int width, int height);
 
 public:
-  LineIO(const std::string text);
+  LineIO(const char * text);
+  ~LineIO();
 
   int getWidth();
   int getHeight();
