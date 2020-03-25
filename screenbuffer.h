@@ -7,6 +7,9 @@
 class ScreenBuffer {
 	uint8_t * _b = NULL;
 	size_t _w, _h;
+
+	protected:
+		ScreenBuffer();
 	
 	public:
 		ScreenBuffer(size_t width, size_t height);
