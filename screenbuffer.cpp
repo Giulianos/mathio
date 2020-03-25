@@ -22,9 +22,6 @@ ScreenBuffer::~ScreenBuffer() {
 }
 
 void ScreenBuffer::setPixel(int x, int y, bool value) {
-	int pixelByte = PIXEL_BYTE(x,y,_w);
-	int pixelBit = PIXEL_BIT(x,y,_w);
-	std::cout << "Setting pixel in byte " << pixelByte << " bit " << pixelBit << std::endl;
 	if (value) {	
 		_b[PIXEL_BYTE(x,y,_w)] |= 1<<(PIXEL_BIT(x,y,_w));	
 	} else {
