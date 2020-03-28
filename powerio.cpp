@@ -1,7 +1,7 @@
 #include "powerio.h"
 #include "screenbufferwindow.h"
 
-#define EXP_BASE_OVERLAP 2
+#define EXP_BASE_OVERLAP 4
 
 PowerIO::PowerIO(MathIO* base, MathIO* exp)
   : _base(base)
