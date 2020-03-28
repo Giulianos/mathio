@@ -12,7 +12,6 @@ class LineIO : public MathIO
 
 public:
   LineIO(const char * text);
-  ~LineIO();
 
   int getWidth();
   int getHeight();
