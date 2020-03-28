@@ -14,6 +14,7 @@ class LineIO : public MathIO
 
 public:
   LineIO(const uint8_t* text);
+  ~LineIO();
 
   int getWidth();
   int getHeight();

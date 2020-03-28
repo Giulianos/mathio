@@ -15,6 +15,11 @@ LineIO::LineIO(const uint8_t* text)
   strcpy((char*)_text, (char*)text);
 }
 
+LineIO::~LineIO()
+{
+	free(_text);
+}
+
 int
 LineIO::getWidth()
 {
