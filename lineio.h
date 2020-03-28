@@ -5,13 +5,15 @@
 
 class LineIO : public MathIO
 {
-  char * _text;
+  uint8_t* _text;
+  int _len;
   bool _compact;
 
   void renderRect(ScreenBuffer* buffer, int x0, int y0, int width, int height);
+  void renderCompactChar(ScreenBuffer* buffer, const uint8_t c, int x0, int y0);
 
 public:
-  LineIO(const char * text);
+  LineIO(const uint8_t* text);
 
   int getWidth();
   int getHeight();

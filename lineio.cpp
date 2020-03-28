@@ -1,24 +1,24 @@
 #include "lineio.h"
+#include "font.h"
 #include <stdlib.h>
 #include <string.h>
 
 #define CHAR_WIDTH 5
 #define CHAR_HEIGHT 9
-#define CHAR_COMPACT_HEIGHT 5
+#define CHAR_COMPACT_HEIGHT 6
 
-LineIO::LineIO(const char * text)
+LineIO::LineIO(const uint8_t* text)
   : _compact(false)
 {
-	_text = (char *)calloc(strlen(text)+1, sizeof(*_text));
-	strcpy(_text, text);
+  _len  = strlen((char*)text);
+  _text = (uint8_t*)calloc(_len + 1, sizeof(*_text));
+  strcpy((char*)_text, (char*)text);
 }
 
 int
 LineIO::getWidth()
 {
-  size_t len = strlen(_text);
-
-  return !len ? 0 : len * (CHAR_WIDTH + 1) - 1;
+  return !_len ? 0 : _len * (CHAR_WIDTH + 1) - 1;
 }
 
 int
@@ -43,14 +43,29 @@ LineIO::renderRect(ScreenBuffer* buffer, int x0, int y0, int width, int height)
 }
 
 void
+LineIO::renderCompactChar(ScreenBuffer* buffer, uint8_t c, int x0, int y0)
+{
+  if (c > 9) {
+    c = 10;
+  }
+  uint8_t* m = fontCompact[c];
+
+  for (int x = 0; x < CHAR_WIDTH; x++) {
+    for (int y = 0; y < CHAR_COMPACT_HEIGHT; y++) {
+      int bit = x + y * CHAR_WIDTH;
+      buffer->setPixel(x + x0, y + y0, m[bit / 8] & 1 << (bit % 8));
+    }
+  }
+}
+
+void
 LineIO::render(ScreenBuffer* buffer)
 {
-  int textLen = strlen(_text);
-  // For now, just render squares
-  for (int i = 0; i < textLen; i++) {
+  for (int i = 0; i < _len; i++) {
     int xPos = (CHAR_WIDTH + 1) * i;
     if (_compact) {
-      renderRect(buffer, xPos, 0, CHAR_WIDTH, CHAR_COMPACT_HEIGHT);
+      uint8_t cIdx = _text[i] - '0';
+      renderCompactChar(buffer, cIdx, xPos, 0);
     } else {
       renderRect(buffer, xPos, 0, CHAR_WIDTH, CHAR_HEIGHT);
     }
