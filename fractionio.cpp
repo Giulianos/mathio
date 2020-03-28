@@ -4,7 +4,7 @@
 FractionIO::FractionIO(MathIO* numerator, MathIO* denominator)
   : _num(numerator)
   , _den(denominator)
-  , _compact(false)
+  , _compact(true)
 {}
 
 int
@@ -16,13 +16,14 @@ FractionIO::getWidth()
   int denWidth = _den->getWidth();
   int numWidth = _num->getWidth();
 
-  return denWidth > numWidth ? denWidth : numWidth;
+  // we add one pixel padding to each side
+  return (denWidth > numWidth ? denWidth : numWidth) + 2;
 }
 
 void
 FractionIO::setCompactMode(bool compact)
 {
-  _compact = compact;
+  _compact = true;
 }
 
 int
@@ -47,8 +48,8 @@ FractionIO::render(ScreenBuffer* buffer)
   int numWidth  = _num->getWidth();
   int denWidth  = _den->getWidth();
 
-  int numOffsetX = denWidth > numWidth ? (denWidth - numWidth) / 2 : 0;
-  int denOffsetX = denWidth < numWidth ? (numWidth - denWidth) / 2 : 0;
+  int numOffsetX = (denWidth > numWidth ? (denWidth - numWidth) / 2 : 0) + 1;
+  int denOffsetX = (denWidth < numWidth ? (numWidth - denWidth) / 2 : 0) + 1;
   int denOffsetY = numHeight + 3;
 
   ScreenBufferWindow numBufferWindow(buffer, numOffsetX, 0);
