@@ -1,7 +1,7 @@
 #include "screenbuffer.h"
 
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 // TODO: refactor pixel indexing to
 // make interfacing with SSD1306 easier
@@ -46,6 +46,7 @@ ScreenBuffer::getPixel(int x, int y)
 }
 
 void
-ScreenBuffer::setAll(bool value) {
-	memset(_b, value ? 0xFF : 0x00, _bSize);
+ScreenBuffer::setAll(bool value)
+{
+  memset(_b, value ? 0xFF : 0x00, _bSize);
 }
