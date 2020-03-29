@@ -5,6 +5,7 @@ FractionIO::FractionIO(MathIO* numerator, MathIO* denominator)
   : _num(numerator)
   , _den(denominator)
   , _compact(true)
+  , _cursorPos(CursorPos::OutsideFraction)
 {}
 
 int
@@ -62,4 +63,62 @@ FractionIO::render(ScreenBuffer* buffer)
   for (int x = 0, y = numHeight + 1; x < width; x++) {
     buffer->setPixel(x, y, true);
   }
+}
+
+void FractionIO::enableCursor(bool enable) {
+    _cursorPos = enable ? CursorPos::Numerator : CursorPos::OutsideFraction;
+}
+
+bool FractionIO::moveCursor(CursorDir direction) {
+    bool wrappedAroundChild = false;
+    switch(direction) {
+        case CursorDir::Down:
+            if(_cursorPos == CursorPos::Numerator) {
+                _num->enableCursor(false);
+                _den->enableCursor(true);
+                _cursorPos = CursorPos::Denominator;
+            }
+            break;
+        case CursorDir::Up:
+            if(_cursorPos == CursorPos::Denominator) {
+                _den->enableCursor(false);
+                _num->enableCursor(true);
+                _cursorPos = CursorPos::Numerator;
+            }
+            break;
+        case CursorDir::Right:
+        case CursorDir::Left:
+            if (_cursorPos == CursorPos::Numerator) {
+                wrappedAroundChild = _num->moveCursor(direction);
+                if (wrappedAroundChild) {
+                    _num->enableCursor(false);
+                    _cursorPos = CursorPos::OutsideFraction;
+                    return true;
+                }
+            } else if (_cursorPos == CursorPos::Denominator) {
+                wrappedAroundChild = _den->moveCursor(direction);
+                if (wrappedAroundChild) {
+                    _den->enableCursor(false);
+                    _cursorPos = CursorPos::OutsideFraction;
+                    return true;
+                }
+            }
+    }
+    return false;
+}
+
+void FractionIO::toggleCursorVisibility() {
+    if (_cursorPos == CursorPos::Denominator) {
+        _den->toggleCursorVisibility();
+    } else if (_cursorPos == CursorPos::Numerator) {
+        _num->toggleCursorVisibility();
+    }
+}
+
+void FractionIO::forceCursorShow() {
+    if (_cursorPos == CursorPos::Denominator) {
+        _den->forceCursorShow();
+    } else if (_cursorPos == CursorPos::Numerator) {
+        _num->forceCursorShow();
+    }
 }

@@ -9,6 +9,13 @@ class FractionIO : public MathIO
   MathIO* _den;
   bool _compact;
 
+  enum class CursorPos {
+      OutsideFraction,
+      Denominator,
+      Numerator,
+  };
+  CursorPos _cursorPos;
+
 public:
   FractionIO(MathIO* numerator, MathIO* denominator);
 
@@ -16,6 +23,10 @@ public:
   int getHeight();
   void render(ScreenBuffer* buffer);
   void setCompactMode(bool compact);
+  void enableCursor(bool enable);
+  bool moveCursor(CursorDir direction);
+  void toggleCursorVisibility();
+  void forceCursorShow();
 };
 
 #endif
