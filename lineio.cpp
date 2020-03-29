@@ -25,7 +25,7 @@ LineIO::~LineIO()
 int
 LineIO::getWidth()
 {
-  return !_len ? 0 : _len * (CHAR_WIDTH + 1);
+  return !_len ? 0 : _len * (CHAR_WIDTH + 1) - 1;
 }
 
 int
@@ -69,7 +69,7 @@ void
 LineIO::render(ScreenBuffer* buffer)
 {
   for (int i = 0; i < _len; i++) {
-    int xPos = (CHAR_WIDTH + 1) * i + 1;
+    int xPos = (CHAR_WIDTH + 1) * i;
     if (_compact) {
       uint8_t cIdx = _text[i] - '0';
       renderCompactChar(buffer, cIdx, xPos, 0);
@@ -82,8 +82,8 @@ LineIO::render(ScreenBuffer* buffer)
   if (_cursorPos >= 0 && _cursorVisible) {
 	  int cursorX = (CHAR_WIDTH + 1) * _cursorPos;
 	  for (int y=0; y < getHeight(); y++) {
+		buffer->setPixel(cursorX-1, y, true);
 		buffer->setPixel(cursorX, y, true);
-		buffer->setPixel(cursorX + 1, y, true);
 	  }
   }
 
@@ -109,6 +109,9 @@ bool LineIO::moveCursor(CursorDir direction) {
     case CursorDir::Right:
 	    _cursorPos++;
 	    break;
+    case CursorDir::Up:
+    case CursorDir::Down:
+        break;
   }
   
   // Check wrapping around
