@@ -8,6 +8,8 @@ class LineIO : public MathIO
   uint8_t* _text;
   int _len;
   bool _compact;
+  int _cursorPos;
+  bool _cursorVisible;
 
   void renderRect(ScreenBuffer* buffer, int x0, int y0, int width, int height);
   void renderCompactChar(ScreenBuffer* buffer, const uint8_t c, int x0, int y0);
@@ -24,6 +26,12 @@ public:
   // output a compact form
   // (used in exponents, fractions, etc.)
   void setCompactMode(bool compact);
+
+  void enableCursor(bool enable);
+  // Returns whether wrapped around or not
+  bool moveCursor(CursorDir direction);
+  void toggleCursorVisibility();
+  void forceCursorShow();
 };
 
 #endif

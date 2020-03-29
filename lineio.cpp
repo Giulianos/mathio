@@ -8,7 +8,9 @@
 #define CHAR_COMPACT_HEIGHT 6
 
 LineIO::LineIO(const uint8_t* text)
-  : _compact(false)
+  : _compact(false),
+    _cursorPos(-1),
+    _cursorVisible(true)
 {
   _len  = strlen((char*)text);
   _text = (uint8_t*)calloc(_len + 1, sizeof(*_text));
@@ -23,7 +25,7 @@ LineIO::~LineIO()
 int
 LineIO::getWidth()
 {
-  return !_len ? 0 : _len * (CHAR_WIDTH + 1) - 1;
+  return !_len ? 0 : _len * (CHAR_WIDTH + 1);
 }
 
 int
@@ -67,7 +69,7 @@ void
 LineIO::render(ScreenBuffer* buffer)
 {
   for (int i = 0; i < _len; i++) {
-    int xPos = (CHAR_WIDTH + 1) * i;
+    int xPos = (CHAR_WIDTH + 1) * i + 1;
     if (_compact) {
       uint8_t cIdx = _text[i] - '0';
       renderCompactChar(buffer, cIdx, xPos, 0);
@@ -75,6 +77,16 @@ LineIO::render(ScreenBuffer* buffer)
       renderRect(buffer, xPos, 0, CHAR_WIDTH, CHAR_HEIGHT);
     }
   }
+
+  // Check if we have to render the cursor
+  if (_cursorPos >= 0 && _cursorVisible) {
+	  int cursorX = (CHAR_WIDTH + 1) * _cursorPos;
+	  for (int y=0; y < getHeight(); y++) {
+		buffer->setPixel(cursorX, y, true);
+		buffer->setPixel(cursorX + 1, y, true);
+	  }
+  }
+
 }
 
 void
@@ -82,3 +94,42 @@ LineIO::setCompactMode(bool compact)
 {
   _compact = compact;
 }
+
+
+void LineIO::enableCursor(bool enable) {
+  _cursorPos = enable ? 0 : -1;	
+}
+
+bool LineIO::moveCursor(CursorDir direction) {
+
+  switch(direction) {
+    case CursorDir::Left:
+	    _cursorPos--;
+	    break;
+    case CursorDir::Right:
+	    _cursorPos++;
+	    break;
+  }
+  
+  // Check wrapping around
+  if (_cursorPos < 0) {
+    _cursorPos = _len - 1;
+    return true;
+  }
+
+  if (_cursorPos >= _len) {
+    _cursorPos = 0;
+    return true;
+  }
+
+  return false;
+}
+
+void LineIO::toggleCursorVisibility() {
+	_cursorVisible = !_cursorVisible;
+}
+
+void LineIO::forceCursorShow() {
+	_cursorVisible = true;
+}
+	
