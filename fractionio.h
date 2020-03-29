@@ -9,10 +9,11 @@ class FractionIO : public MathIO
   MathIO* _den;
   bool _compact;
 
-  enum class CursorPos {
-      OutsideFraction,
-      Denominator,
-      Numerator,
+  enum class CursorPos
+  {
+    OutsideFraction,
+    Denominator,
+    Numerator,
   };
   CursorPos _cursorPos;
 

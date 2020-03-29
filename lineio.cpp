@@ -8,9 +8,9 @@
 #define CHAR_COMPACT_HEIGHT 6
 
 LineIO::LineIO(const uint8_t* text)
-  : _compact(false),
-    _cursorPos(-1),
-    _cursorVisible(true)
+  : _compact(false)
+  , _cursorPos(-1)
+  , _cursorVisible(true)
 {
   _len  = strlen((char*)text);
   _text = (uint8_t*)calloc(_len + 1, sizeof(*_text));
@@ -19,7 +19,7 @@ LineIO::LineIO(const uint8_t* text)
 
 LineIO::~LineIO()
 {
-	free(_text);
+  free(_text);
 }
 
 int
@@ -80,13 +80,12 @@ LineIO::render(ScreenBuffer* buffer)
 
   // Check if we have to render the cursor
   if (_cursorPos >= 0 && _cursorVisible) {
-	  int cursorX = (CHAR_WIDTH + 1) * _cursorPos;
-	  for (int y=0; y < getHeight(); y++) {
-		buffer->setPixel(cursorX-1, y, true);
-		buffer->setPixel(cursorX, y, true);
-	  }
+    int cursorX = (CHAR_WIDTH + 1) * _cursorPos;
+    for (int y = 0; y < getHeight(); y++) {
+      buffer->setPixel(cursorX - 1, y, true);
+      buffer->setPixel(cursorX, y, true);
+    }
   }
-
 }
 
 void
@@ -95,25 +94,28 @@ LineIO::setCompactMode(bool compact)
   _compact = compact;
 }
 
-
-void LineIO::enableCursor(bool enable) {
-  _cursorPos = enable ? 0 : -1;	
+void
+LineIO::enableCursor(bool enable)
+{
+  _cursorPos = enable ? 0 : -1;
 }
 
-bool LineIO::moveCursor(CursorDir direction) {
+bool
+LineIO::moveCursor(CursorDir direction)
+{
 
-  switch(direction) {
+  switch (direction) {
     case CursorDir::Left:
-	    _cursorPos--;
-	    break;
+      _cursorPos--;
+      break;
     case CursorDir::Right:
-	    _cursorPos++;
-	    break;
+      _cursorPos++;
+      break;
     case CursorDir::Up:
     case CursorDir::Down:
-        break;
+      break;
   }
-  
+
   // Check wrapping around
   if (_cursorPos < 0) {
     _cursorPos = _len - 1;
@@ -128,11 +130,14 @@ bool LineIO::moveCursor(CursorDir direction) {
   return false;
 }
 
-void LineIO::toggleCursorVisibility() {
-	_cursorVisible = !_cursorVisible;
+void
+LineIO::toggleCursorVisibility()
+{
+  _cursorVisible = !_cursorVisible;
 }
 
-void LineIO::forceCursorShow() {
-	_cursorVisible = true;
+void
+LineIO::forceCursorShow()
+{
+  _cursorVisible = true;
 }
-	
