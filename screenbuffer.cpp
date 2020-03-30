@@ -1,7 +1,7 @@
 #include "screenbuffer.h"
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 // TODO: refactor pixel indexing to
 // make interfacing with SSD1306 easier
@@ -9,7 +9,7 @@
 #define PIXEL_BIT(x, y, w) (((x) + (y) * (w)) % 8)
 
 ScreenBuffer::ScreenBuffer()
-  : _b(NULL)
+  : _b(nullptr)
 {}
 
 ScreenBuffer::ScreenBuffer(size_t width, size_t height)
@@ -24,25 +24,27 @@ ScreenBuffer::ScreenBuffer(size_t width, size_t height)
 
 ScreenBuffer::~ScreenBuffer()
 {
-  if (_b != NULL) {
+  if (_b != nullptr) {
     free(_b);
   }
 }
 
 void
-ScreenBuffer::setPixel(int x, int y, bool value)
+ScreenBuffer::setPixel(size_t x, size_t y, bool value)
 {
+  uint32_t mask = 1U << PIXEL_BIT(x, y, _w);
   if (value) {
-    _b[PIXEL_BYTE(x, y, _w)] |= 1 << (PIXEL_BIT(x, y, _w));
+    _b[PIXEL_BYTE(x, y, _w)] |= mask;
   } else {
-    _b[PIXEL_BYTE(x, y, _w)] &= ~(1 << (PIXEL_BIT(x, y, _w)));
+    _b[PIXEL_BYTE(x, y, _w)] &= ~mask;
   }
 }
 
 bool
-ScreenBuffer::getPixel(int x, int y)
+ScreenBuffer::getPixel(size_t x, size_t y)
 {
-  return _b[PIXEL_BYTE(x, y, _w)] & 1 << (PIXEL_BIT(x, y, _w));
+  uint32_t mask = 1U << PIXEL_BIT(x, y, _w);
+  return _b[PIXEL_BYTE(x, y, _w)] & mask;
 }
 
 void
