@@ -13,8 +13,9 @@
  * of mathematical formulas
  */
 class MathIO {
-  MathIO* mChildren;
+  MathIO** mChildren;
   size_t mChildrenCount;
+  size_t mChildrenCap;
 
   bool mCursorAttached;
   size_t mCursorPos;
@@ -82,10 +83,6 @@ public:
    * container (or one of its children)
    */
   virtual void AttachCursor();
-
-  /**
-   * of the cursor
-   */
 
   /**
    * InsertCharacter inserts character
