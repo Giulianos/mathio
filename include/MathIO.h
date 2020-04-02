@@ -2,8 +2,8 @@
 // Created by Giulianos on 3/30/20.
 //
 
-#ifndef MATHIO_H
-#define MATHIO_H
+#ifndef MATHIO_MATHIO_H
+#define MATHIO_MATHIO_H
 
 #include "screenbuffer.h"
 
@@ -101,4 +101,4 @@ public:
 
 };
 
-#endif // MATHIO_H
+#endif // MATHIO_MATHIO_H
