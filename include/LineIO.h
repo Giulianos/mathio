@@ -19,7 +19,10 @@ class LineIO : public MathIO
   static const size_t CharacterWidth;
   static const size_t CharacterHeight;
 
-  static void RenderCharacter(ScreenBuffer* buffer, uint8_t c, size_t x0, size_t y0);
+  static void RenderCharacter(ScreenBuffer* buffer,
+                              uint8_t c,
+                              size_t x0,
+                              size_t y0);
 
 public:
   LineIO();
@@ -36,6 +39,8 @@ public:
 
   void InsertCharacter(uint8_t character) override;
   void AddContainer(ContainerType containerType) override;
+
+  ContainerType GetContainerType() override;
 };
 
 #endif // MATHIO_LINEIO_H

@@ -10,11 +10,13 @@ const size_t LineIO::CharacterHeight = 6;
 
 LineIO::LineIO()
   : mText(nullptr)
-  , mTextCap(0)
+  , mTextCap(5)
   , mTextLen(0)
   , mCursorPos(0)
   , mCursorAttached(false)
-{}
+{
+  mText = (uint8_t*)calloc(mTextCap, sizeof(*mText));
+}
 
 LineIO::~LineIO()
 {
@@ -55,11 +57,10 @@ LineIO::RenderCharacter(ScreenBuffer* buffer, uint8_t c, size_t x0, size_t y0)
 void
 LineIO::Render(ScreenBuffer* sb)
 {
-
   for (size_t i = 0; i < mTextLen; i++) {
-    size_t xPos = (CharacterWidth + 1) * i;
-      uint8_t cIdx = mText[i] - '0';
-      RenderCharacter(sb, cIdx, xPos, 0);
+    size_t xPos  = (CharacterWidth + 1) * i;
+    uint8_t cIdx = mText[i] - '0';
+    RenderCharacter(sb, cIdx, xPos, 0);
   }
 
   // Check if we have to render the cursor
@@ -106,8 +107,8 @@ LineIO::DetachCursor()
 void
 LineIO::AttachCursor()
 {
- mCursorPos = 0;
- mCursorAttached = true;
+  mCursorPos      = 0;
+  mCursorAttached = true;
 }
 
 void
@@ -116,17 +117,25 @@ LineIO::InsertCharacter(uint8_t character)
   // Reserve more space if necessary
   if (mTextLen == mTextCap) {
     mTextCap *= 2;
-    mText = (uint8_t *)realloc(mText, mTextCap*sizeof(*mText));
+    mText = (uint8_t*)realloc(mText, mTextCap * sizeof(*mText));
   }
 
   // Shift current text
-  for(size_t txtIdx = mCursorPos; txtIdx < mTextLen; txtIdx++) {
-    mText[txtIdx + 1] = mText[txtIdx];
+  for (size_t txtIdx = mTextLen; txtIdx > mCursorPos; txtIdx--) {
+    mText[txtIdx] = mText[txtIdx - 1];
   }
 
   mText[mCursorPos] = character;
+  mTextLen++;
+  mCursorPos++;
 }
 
 void
 LineIO::AddContainer(MathIO::ContainerType containerType)
 {}
+
+MathIO::ContainerType
+LineIO::GetContainerType()
+{
+  return MathIO::ContainerType::Line;
+}
