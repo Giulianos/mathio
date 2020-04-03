@@ -9,13 +9,13 @@ ScreenBufferWindow::ScreenBufferWindow(ScreenBuffer* b,
 {}
 
 void
-ScreenBufferWindow::setPixel(int x, int y, bool value)
+ScreenBufferWindow::setPixel(size_t x, size_t y, bool value)
 {
   _sbRef->setPixel(x + _offsetX, y + _offsetY, value);
 }
 
 bool
-ScreenBufferWindow::getPixel(int x, int y)
+ScreenBufferWindow::getPixel(size_t x, size_t y)
 {
   return _sbRef->getPixel(x + _offsetX, y + _offsetY);
 }
