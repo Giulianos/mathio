@@ -12,7 +12,8 @@
  * that displays and allows editing
  * of mathematical formulas
  */
-class MathIO {
+class MathIO
+{
   MathIO** mChildren;
   size_t mChildrenCount;
   size_t mChildrenCap;
@@ -25,7 +26,8 @@ public:
    * CursorDirection indicates
    * a cursor movement direction
    */
-  enum class CursorDirection {
+  enum class CursorDirection
+  {
     Up,
     Down,
     Left,
@@ -37,7 +39,10 @@ public:
    * different types of containers
    * that can be created
    */
-  enum class ContainerType {
+  enum class ContainerType
+  {
+    Math,
+    Line,
     Fraction,
     Power,
     Root,
@@ -99,6 +104,11 @@ public:
    */
   virtual void AddContainer(ContainerType containerType);
 
+  /**
+   * GetContainerType
+   * @return the type of the container
+   */
+  virtual ContainerType GetContainerType();
 };
 
 #endif // MATHIO_MATHIO_H
