@@ -78,7 +78,7 @@ LineIO::MoveCursor(MathIO::CursorDirection direction)
   switch (direction) {
     case CursorDirection ::Left:
       if (mCursorPos == 0) {
-        mCursorPos = mTextLen - 1;
+        mCursorPos = mTextLen;
         return true;
       }
       mCursorPos--;
