@@ -2,8 +2,8 @@
 // Created by Giulianos on 3/30/20.
 //
 
-#ifndef MATHIO_H
-#define MATHIO_H
+#ifndef MATHIO_MATHIO_H
+#define MATHIO_MATHIO_H
 
 #include "screenbuffer.h"
 
@@ -12,9 +12,11 @@
  * that displays and allows editing
  * of mathematical formulas
  */
-class MathIO {
-  MathIO* mChildren;
+class MathIO
+{
+  MathIO** mChildren;
   size_t mChildrenCount;
+  size_t mChildrenCap;
 
   bool mCursorAttached;
   size_t mCursorPos;
@@ -24,7 +26,8 @@ public:
    * CursorDirection indicates
    * a cursor movement direction
    */
-  enum class CursorDirection {
+  enum class CursorDirection
+  {
     Up,
     Down,
     Left,
@@ -36,7 +39,10 @@ public:
    * different types of containers
    * that can be created
    */
-  enum class ContainerType {
+  enum class ContainerType
+  {
+    Math,
+    Line,
     Fraction,
     Power,
     Root,
@@ -84,10 +90,6 @@ public:
   virtual void AttachCursor();
 
   /**
-   * of the cursor
-   */
-
-  /**
    * InsertCharacter inserts character
    * into cursor's current position
    * @param character
@@ -102,6 +104,11 @@ public:
    */
   virtual void AddContainer(ContainerType containerType);
 
+  /**
+   * GetContainerType
+   * @return the type of the container
+   */
+  virtual ContainerType GetContainerType();
 };
 
-#endif // MATHIO_H
+#endif // MATHIO_MATHIO_H
